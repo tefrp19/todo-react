@@ -1,0 +1,269 @@
+.root {
+    height: 100vh;
+    display: flex;
+    position: relative;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.contanier {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 3rem;
+    background: url("../img/bg.jpg") no-repeat center;
+    background-size: cover;
+    position: relative;
+}
+
+.mask {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgb(0, 0, 0, .5);
+    position: absolute;
+    display: none;
+}
+
+.groupToolbar {
+    margin-top: 10px;
+    display: flex;
+    height: 2rem;
+    align-items: center;
+    color: #fff;
+
+}
+
+.menu {
+    display: none;
+    width: 25px;
+    height: 25px;
+}
+
+.groupName {
+    font-size: 24px;
+    max-width: 500px;
+    /*  1.不换行
+        2.文字内容溢出的部分隐藏
+        3.以省略号代替溢出部分
+    */
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.toolbarButton {
+    width: 25px;
+    height: 32px;
+    font-size: 20px;
+    margin-left: 10px;
+    position: relative;
+}
+
+.toolbarButton>i {
+    width: 100%;
+    height: 32px;
+    /* 使用line-height给文字垂直居中需要设置固定值，因为line-height的百分比是相对于font-size */
+    line-height: 32px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.toolbarButton>i:hover {
+    cursor: pointer;
+    background-color: rgb(255, 255, 255, .3);
+}
+
+.message {
+    position: absolute;
+    /* 实现消失元素的显现过渡效果思路：首先 transition: opacity 1s;然后消失元素设置opacity: 0;并且移除屏幕外，当显现时移回屏幕，再设置opacity: 1; */
+    top: 99999px;
+    left: 40px;
+    width: 100px;
+    height: 25px;
+    font-size: 10px;
+    border-radius: 3px;
+    line-height: 25px;
+    text-align: center;
+    background-color: #fff;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.toolbarButton i:hover+.message {
+    /*  */
+    top: 0;
+    opacity: 1;
+}
+
+/* 实现尖角 */
+.message::before {
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 2px;
+    /* 右边距离父元素的宽度百分之百 */
+    right: 100%;
+    display: block;
+    border-right: 10px solid #fff;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+
+}
+
+.toolbarDetail {
+    width: 200px;
+    overflow: hidden;
+    height: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px;
+    transform: translate(-40%);
+    display: flex;
+    flex-direction: column;
+    transition: height 0.2s;
+    position: absolute;
+    z-index: 1;
+}
+
+.toolbarDetail button {
+    background-color: #fff;
+    margin: 2px 0;
+    display: flex;
+}
+
+.toolbarDetail button:last-child {
+    color: #e90000;
+}
+
+.toolbarDetail span {
+    height: 38px;
+    line-height: 38px;
+}
+
+.toolbarDetail i {
+    width: 50px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 20px;
+}
+
+.toolbarDetail button:hover {
+    cursor: pointer;
+    background-color: #edebe9;
+}
+
+.tasks {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-height: 24rem;
+    overflow-y: auto;
+}
+
+.task-item {
+    background-color: rgb(238, 239, 243);
+    height: 4rem;
+    line-height: 4rem;
+    border-radius: 5px;
+    margin-top: 5px;
+    display: flex;
+}
+
+.checkBox {
+    height: 100%;
+    color: #0062cc;
+    margin: 0 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.checkBox:hover {
+    cursor: pointer;
+}
+
+/* 将后一个i设为绝对定位，浮在checkBox上面，透明度为0。鼠标悬浮时，后一个i透明度变为1 */
+.checkBox i:last-child {
+    position: absolute;
+    opacity: 0;
+    transition: opacity .1s;
+}
+
+.checkBox:hover i:last-child {
+    opacity: 1;
+}
+
+.task-name {
+    flex-grow: 1;
+}
+
+.importance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    text-align: center;
+    margin-right: 10px;
+    transition: all .1s;
+    height: 100%;
+}
+
+.importance:hover {
+    cursor: pointer;
+    color: #0062cc;
+}
+
+
+.tasks li:hover {
+    background-color: rgb(237, 235, 233);
+    cursor: pointer;
+}
+
+.splitLine {
+    width: 80px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #F3F3F3;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.checked {
+    padding-bottom: 4rem;
+}
+
+.checked .task-name {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.checked .checkBox i {
+    position: static;
+    opacity: 1;
+}
+
+.addTask {
+    position: absolute;
+    width: 90%;
+    bottom: 5px;
+}
+
+.addTask i {
+    height: 4rem;
+    line-height: 4rem;
+}
+
+.addTask input {
+    width: 100%;
+    background-color: transparent;
+    font-size: 15px;
+}

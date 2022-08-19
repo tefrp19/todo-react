@@ -1,9 +1,15 @@
 import './index.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./Register";
+import {UserLoginContext} from "../App";
 
 export default function PreHome() {
     const [isLoginPage, setIsLoginPage] = useState(true) // 当前页面是登录页或者注册页
+    useEffect(()=>{
     document.title = isLoginPage ? '登录todo' : '注册todo'
+
+    })
 
     return <main>
         <div className="cover"/>
@@ -22,12 +28,13 @@ export default function PreHome() {
                         </div>
                     }
                 </div>
+                <UserLoginContext.Consumer>
+                    {
+                        value => isLoginPage ? <LoginForm setUserLogin={value}/> : <RegisterForm setUserLogin={value}/>
+                    }
+                </UserLoginContext.Consumer>
 
-                <form className="login" action="http://127.0.0.1:8000/login" method="post">
-                    <input className="text-input" type="text" placeholder="Username" name="username"/>
-                    <input className="text-input" type="password" placeholder="Password" name="password"/>
-                    <button className="text-input login-btn">{isLoginPage ? 'LOGIN NOW' : 'REGISTER NOW'}</button>
-                </form>
+
             </div>
         </div>
     </main>

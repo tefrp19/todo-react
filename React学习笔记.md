@@ -4,99 +4,28 @@
 
 
 
-# React学习笔记
+## react渲染组件流程（生命周期）
 
-## [引入React](https://react.docschina.org/docs/add-react-to-a-website.html)及导入jsx代码
+类式组件：[渲染流程](https://zh-hans.reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class)
 
-```html
-<script type="text/babel" src="xxx"></script>
-<!-->要想识别jsx代码script标签需要加上属性type="text/babel"</--!>
-```
+函数式组件：
 
-
-
-## react渲染dom
-
-React DOM 在渲染所有输入内容之前，默认会进行[转义](https://stackoverflow.com/questions/7381974/which-characters-need-to-be-escaped-on-html)
+1. 执行函数内部代码
+2. 根据返回值渲染组件
+3. 执行`useEffect`中的函数（调用ComponentDidMount()）
+4. 
 
 
 
-Babel 会把 JSX 转译成一个名为 `React.createElement()` 函数调用。
 
-以下两种示例代码完全等效：
 
-```jsx
-const element = (
-  <h1 className="greeting">
-    Hello, world!
-  </h1>
-);
-const element = React.createElement(
-  'h1',
-  {className: 'greeting'},
-  'Hello, world!'
-);
-```
 
-`React.createElement()` 会预先执行一些检查，以帮助你编写无错代码，但实际上它创建了一个这样的对象：
-
-```jsx
-// 注意：这是简化过的结构
-const element = {
-  type: 'h1',
-  props: {
-    className: 'greeting',
-    children: 'Hello, world!'
-  }
-};
-```
 
 ### 阻止组件渲染
 
 类组件render()返回null该组件不会被渲染，但并不会影响生命周期，componentDidUpdate 依然会被调用
 
-## 将函数组件转换成 class 组件
 
-通过以下五步将 `Clock` 的函数组件转成 class 组件：
-
-1. 创建一个同名的 [ES6 class](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes)，并且继承于 `React.Component`。
-2. 添加一个空的 `render()` 方法。
-3. 将函数体移动到 `render()` 方法之中。
-4. 在 `render()` 方法中使用 `this.props` 替换 `props`。
-5. 删除剩余的空函数声明。
-
-```jsx
-class Clock extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
-      </div>
-    );
-  }
-}
-```
-
-每次组件更新时 `render` 方法都会被调用，但只要在相同的 DOM 节点中渲染 `<Clock />` ，就仅有一个 `Clock` 组件的 class 实例被创建使用。这就使得我们可以使用如 state 或生命周期方法等很多其他特性。
-
-
-
-
-
-## 组件的定义
-
-组件是自己创建的html标签，eg：
-
-```jsx
-import Reactimport React from 'react';
-
-function Hello(props) {   return <div>Hello {props.toWhat}</div>;}
-
-function HelloWorld() {  return <Hello toWhat="World" />;}
-```
-
-Hello、HelloWorld都是组件
 
 ##  列表
 
@@ -303,7 +232,9 @@ ref属用于类式组件的实例化对象或真实dom节点（eg：div，p）�
 
 useEffect(()=>{})函数体中的内容在组件第一次渲染的时候会执行，在状态更新的时候会执行（可选择监听或不监听部分或全部状态），在组件卸载的时候会执行（可选，如果useEffect有返回函数，在组件卸载的时候会执行这个返回函数）
 
+## context
 
+当祖先组件需要向后代组件（嵌套很深时）传状态时使用context，不用一层一层地通过pros传state
 
 ## 创建React应用步骤及React哲学
 
@@ -393,26 +324,6 @@ function BlueDatePicker() {
 
 #  引申出的其他知识点
 
-## super
-
-**super**关键字用于访问和调用一个对象的父对象上的函数。
-
-`super.prop`和`super[expr]`表达式在[类](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)和[对象字面量](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)任何[方法定义](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)中都是有效的。
-
-### [语法](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super#语法)
-
-```
-super([arguments]);
-// 调用 父对象/父类 的构造函数
-
-super.functionOnParent([arguments]);
-// 调用 父对象/父类 上的方法
-```
-
-## [try...catch...finally](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/try...catch#%E6%8F%8F%E8%BF%B0)
-
-### [throw](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/throw)
-
 ## 高阶函数与函数柯里化
 
 ### 高阶函数定义
@@ -443,6 +354,12 @@ Babel 是一个工具链，主要用于在旧的浏览器或环境中将 ECMAScr
 
 
 
+## 配置代理
+
+`package.json`中配置代理：e.g."proxy": "http://127.0.0.1:8000"
+
+
+
 ## 项目工程化
 
 ### [webpack静态模块打包工具](https://webpack.docschina.org/concepts/)
@@ -465,25 +382,7 @@ Babel 是一个工具链，主要用于在旧的浏览器或环境中将 ECMAScr
 
 **虚拟滚动——指的是只渲染可视区域的列表项，非可见区域的**完全不渲染，在滚动条滚动时动态更新列表项。
 
-## web网页套壳
 
-将网页视为一个应用程序app
-
-## API接口
-
-若一个项目是前后端分离的，后端应向前端提供接口文档，其中需要包括内容：
-
-- 请求
-
-  - url
-  - 请求方式type：GET/POST/DELETE
-  - 参数param有哪些
-
-- 响应
-
-  - 格式
-
-  
 
 ## axios
 

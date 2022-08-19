@@ -1,0 +1,11 @@
+@import url('../rest.css');
+/* 左中右三栏布局的代码 */
+@import url('Left/index.css');
+@import url('Center/index.css');
+@import url('Right/index.css');
+
+/* 响应式布局 */
+@import url('response.css');
+
+/*图标*/
+@import url('https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css');
