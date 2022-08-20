@@ -31,11 +31,15 @@
 
 在react列表中需要给每个元素添加一个key值。但如果列表项目的顺序可能会变化，数组索引做key值会导致性能变差，还可能引起组件状态的问题
 
-## 受控组件
+## 受控组件与非受控组件
 
 在 HTML 中，表单元素（如`<input>`、 `<textarea>` 和 `<select>`）通常自己维护 state，并根据用户输入进行更新。而在 React 中，可变状态（mutable state）通常保存在组件的 state 属性中，并且只能通过使用 [`setState()`](https://react.docschina.org/docs/react-component.html#setstate)来更新。
 
 我们可以把两者结合起来，使 React 的 state 成为“唯一数据源”。渲染表单的 React 组件还控制着用户输入过程中表单发生的操作。被 React 以这种方式控制取值的表单输入元素就叫做“受控组件”。
+
+如果不需要实时获取输入框的内容（例如实时校验），就可以使用非受控组件
+
+[受控组件和非受控组件的区别与使用](https://goshacmd.com/controlled-vs-uncontrolled-inputs-react/)
 
 ## 组件的三大属性
 
@@ -322,8 +326,6 @@ function BlueDatePicker() {
   return <MyComponents.DatePicker color="blue" />;}
 ```
 
-#  引申出的其他知识点
-
 ## 高阶函数与函数柯里化
 
 ### 高阶函数定义
@@ -336,16 +338,6 @@ function BlueDatePicker() {
 ### 函数柯里化定义
 
 柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数
-
-## 自动插入换行的陷阱
-
-## 小驼峰大驼峰命名
-
-大驼峰法 相比小驼峰法，大驼峰法把第一个单词的首字母也大写了。常用于类名，函数名，属性，命名空间
-
-## TypeScript
-
-[TypeScript](https://www.typescriptlang.org/) 是一种由微软开发的编程语言。它是 JavaScript 的一个类型**超集**（超集定义：如果一个[集合](https://baike.baidu.com/item/集合/73081)S2中的每一个元素都在集合S1中，且集合S1中可能包含S2中没有的元素，则集合S1就是S2的一个超集），包含独立的编译器。作为一种类型语言，TypeScript 可以在构建时发现 bug 和错误，这样程序运行时就可以避免此类错误。您可以通过[此文档](https://github.com/Microsoft/TypeScript-React-Starter#typescript-react-starter) 了解更多有关在 React 中使用 TypeScript 的知识。
 
 ## [Babel工具](https://babel.docschina.org/docs/en/)
 
