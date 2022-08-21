@@ -1,44 +1,33 @@
 import {UserLoginContext} from "../components/App";
 import React, {useEffect, useState} from "react";
+import axios from "axios";
 
-const ip = '127.0.0.1:3000'
+// 请求实例
+const instance = axios.create({
+    baseURL: 'http://127.0.0.1:3000',
+    timeout: 40000// 设置在4000毫秒内请求数据，如果没有请求成功就执行错误函数
+})
 
-// export function useUserLogin() {
-//     const [userLogin, setUserLogin] = useState(false)
-//     useEffect(() => {
-//         if (localStorage.getItem('userLogin')) {
-//             setUserLogin(true)
-//         } else {
-//             setUserLogin(false)
-//         }
-//     },[])
-//     return [userLogin,setUserLogin]
-// }
+// 添加请求拦截器
+instance.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
 
-const fetchData = (path, method, params) => {
-    return fetch(`//${ip}${path}`, {
-        method,
-        // 默认fetch请求不带上cookie
-        credentials: "include",
-        // 配置MIME请求类型，以保证服务端能正确解析json数据
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: params ? JSON.stringify(params) : null,
-    })
-        .then(res => res.json())
-        .then(res => {
-            if (res.message === 'session无效，请登录') {
-                setTimeout(() => {
-                    // 1.删localStorage
-                    // 2.改全局状态 ？如何
-                    const setUserLogin = React.useContext(UserLoginContext)
-                    console.log(setUserLogin)
-                    // window.alert('session无效，请重新登录！')
-                    // location.href = 'login.html'
-                }, 2000)
-            }
-            return res
-        })
-};
-export default fetchData
+// 添加响应拦截器
+instance.interceptors.response.use(function (response) {
+    console.log('成功响应',response)
+    // 对响应数据做点什么
+    // 如果状态码为401说明cookie过期，提示重新登录
+    return response;
+}, function (error) {
+    console.log('失败响应',error)
+    // 对响应错误做点什么
+    // 响应失败说明服务器出错
+    return Promise.reject(error);
+});
+
+export default instance

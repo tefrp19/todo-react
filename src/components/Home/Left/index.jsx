@@ -17,18 +17,19 @@ export default function Left() {
         getGroups()
     }, [])
 
+    function handleChange(e) {
+        setNewGroupName(e.target.value)
+    }
 
-    async function addNewGroup(e) {
-        // if (newGroupName) {
-        //     const data = {name: newGroupName}
-        //     const {data: {data: {newGroupId}}} = (await axios.post('http://127.0.0.1:3000/groups', data))
-        //     // console.log('新增分组：', newGroupName);
-        //     const newGroup = {id: newGroupId, name: newGroupName}
-        //     setGroups([...groups, newGroup])
-        // }
-        // setNewGroupName('')
-        console.log(e.target.value)
-        e.target.value=''
+    async function addNewGroup() {
+        if (newGroupName) {
+            const data = {name: newGroupName}
+            const {data: {data: {newGroupId}}} = (await axios.post('http://127.0.0.1:3000/groups', data))
+            // console.log('新增分组：', newGroupName);
+            const newGroup = {id: newGroupId, name: newGroupName}
+            setGroups([...groups, newGroup])
+        }
+        setNewGroupName('')
     }
 
     // 回车触发事件
@@ -58,7 +59,7 @@ export default function Left() {
             </ul>
             <div className="addGroup group-item">
                 <i className="fa fa-plus"/>
-                <input placeholder="新建分组" autoComplete="off"
+                <input placeholder="新建分组" value={newGroupName} autoComplete="off" onChange={handleChange}
                        onBlur={addNewGroup} onKeyDown={handleKeyDown}/>
             </div>
         </div>
