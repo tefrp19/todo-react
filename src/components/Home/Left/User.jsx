@@ -21,7 +21,6 @@ export default function User() {
         document.addEventListener('click', function (e) {
             if (e.target !== avatarRef.current && e.target !== imgRef.current) {
                 setShowAccountCrtl(false)
-                setUserLogin(false)
             }
         })
 
@@ -34,6 +33,7 @@ export default function User() {
     async function handleLogout() {
         await instance.get('/logout')
         localStorage.removeItem('userLogin')
+        setUserLogin(false)
 
     }
 

@@ -1,6 +1,7 @@
 import {UserLoginContext} from "../components/App";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {message} from "antd";
 
 // 请求实例
 const instance = axios.create({
@@ -19,15 +20,18 @@ instance.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
-    console.log('成功响应',response)
     // 对响应数据做点什么
     // 如果状态码为401说明cookie过期，提示重新登录
-    return response;
+    if (response.data.status===401){
+
+
+    }
+    return response.data;
 }, function (error) {
-    console.log('失败响应',error)
     // 对响应错误做点什么
-    // 响应失败说明服务器出错
-    return Promise.reject(error);
+    message.error(error.message)
+    // 中断promise链
+    return new Promise(()=>{});
 });
 
 export default instance
