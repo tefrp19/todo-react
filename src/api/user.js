@@ -1,18 +1,30 @@
-import fetchData from './app.js';
+import instance from "./app.js";
 
-export const register = async (data) => {
-    return await fetchData('/register', 'post', data);
+/**
+ *
+ * @param data
+ * @param data.username
+ * @param data.password
+ */
+export const registerApi = (data) => {
+    return instance.post('/register', data);
 }
 
-export const login = async (data) => {
-    return await fetchData('/login', 'post', data);
+/**
+ *
+ * @param data
+ * @param data.username
+ * @param data.password
+ */
+export const loginApi = (data) => {
+    return instance.post('/login', data);
 }
 
-export const getUser = async () => {
-    return await fetchData('/user', 'get');
+export const getUserApi = () => {
+    return instance.get('/user')
 }
 
-export const logout = async () => {
-    return await fetchData('/logout', 'get')
+export const logoutApi = () => {
+    return instance.get('/logout')
 }
 

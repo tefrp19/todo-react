@@ -24,3 +24,7 @@ button {
     outline: none;
     border: none;
 }
+
+body {
+    font-size: 16px;
+}

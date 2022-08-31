@@ -1,4 +1,4 @@
-@import url(../rest.css);
+@import url(../reset.css);
 
 main {
     height: 100vh;
@@ -39,6 +39,14 @@ a:hover {
     display: flex;
     justify-content: space-between;
     font-size: 1.25rem;
+}
+
+.header a {
+    color: #49c5b6;
+}
+
+.header a:hover {
+    color: #000;
 }
 
 .text-input {

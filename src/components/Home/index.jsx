@@ -1,18 +1,18 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Left from "./Left";
 import "./index.css"
 import Center from "./Center";
 import Right from "./Right";
 
 export default function Home() {
-    useEffect(() => {
-        document.title = '首页'
-    }, [])
-    
+    const [isGroupPage, setIsGroupPage] = useState(false)
+    const [nowGroupName, setNowGroupName] = useState('我的一天')//当前操作的分组名
+    const [tasks, setTasks] = useState([])
+
     return <div className="root">
-        <Left/>
+        <Left setNowGroupName={setNowGroupName} setTasks={setTasks} setIsGroupPage={setIsGroupPage}/>
         <main>
-            {/*<Center/>*/}
+            <Center nowGroupName={nowGroupName} isGroupPage={isGroupPage} tasks={tasks} setTasks={setTasks}/>
             {/*<Right/>*/}
         </main>
     </div>

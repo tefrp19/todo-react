@@ -1,6 +1,6 @@
 import {UserLoginContext} from "../App";
 import {useContext} from "react";
-import {login} from "../../api/user";
+import {login, loginApi} from "../../api/user";
 import axios from "axios";
 import instance from "../../api/app";
 import {message} from "antd";
@@ -12,11 +12,11 @@ export default function LoginForm() {
         e.preventDefault() // 阻止表单默认提交
         const [{value: username}, {value: password}] = e.target // 嵌套解构赋值
         const data = {username, password}
-
-        const res = await instance.post('/login', data)
+        const res = await loginApi(data)
         if (res.status === 200) {
             localStorage.setItem('userLogin', 'userLogin')
             setUserLogin(true)
+            message.success('登录成功')
         } else {
             message.error(res.message)
         }

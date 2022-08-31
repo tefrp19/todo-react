@@ -1,8 +1,7 @@
 import avatar from "../img/avatar.png";
 import {useContext, useEffect, useRef, useState} from "react";
-import axios from "axios";
-import instance from "../../../api/app";
 import {UserLoginContext} from "../../App";
+import {getUserApi, logoutApi} from "../../../api/user";
 
 export default function User() {
     const [username, setUsername] = useState('用户名')
@@ -13,7 +12,7 @@ export default function User() {
     useEffect(() => {
 
         async function getUsername() {
-            const {data: {data: {username}}} = (await axios.get('http://127.0.0.1:3000/user'))
+            const {data: {username}} = await getUserApi()
             setUsername(username)
         }
 
@@ -31,10 +30,9 @@ export default function User() {
     }
 
     async function handleLogout() {
-        await instance.get('/logout')
+        await logoutApi()
         localStorage.removeItem('userLogin')
         setUserLogin(false)
-
     }
 
     return <div className="user">

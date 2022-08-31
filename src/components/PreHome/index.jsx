@@ -1,13 +1,13 @@
-import './index.css'
 import {useEffect, useState} from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./Register";
 import {UserLoginContext} from "../App";
+import './index.css'
 
 export default function PreHome() {
     const [isLoginPage, setIsLoginPage] = useState(true) // 当前页面是登录页或者注册页
-    useEffect(()=>{
-    document.title = isLoginPage ? '登录todo' : '注册todo'
+    useEffect(() => {
+        document.title = isLoginPage ? '登录todo' : '注册todo'
 
     })
 

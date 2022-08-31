@@ -3,15 +3,17 @@ import avatar from "../img/avatar.png"
 import {useEffect, useState} from "react";
 import axios from "axios";
 import User from "./User";
-import {Button} from "antd";
+import {addGroupApi, getGroups, getGroupsApi} from "../../../api/group";
+import {message} from "antd";
+import {GroupItem} from "./GroupItem";
 
 
-export default function Left() {
-    const [groups, setGroups] = useState(null)
+export default function Left({setNowGroupName, setIsGroupPage, setTasks}) {
+    const [groups, setGroups] = useState([])
     const [newGroupName, setNewGroupName] = useState('')
     useEffect(() => {
         async function getGroups() {
-            const {data: {data: groups}} = (await axios.get('http://127.0.0.1:3000/groups'))
+            const {data: groups} = await getGroupsApi()
             setGroups(groups)
         }
 
@@ -25,8 +27,8 @@ export default function Left() {
     async function addNewGroup() {
         if (newGroupName) {
             const data = {name: newGroupName}
-            const {data: {data: {newGroupId}}} = (await axios.post('http://127.0.0.1:3000/groups', data))
-            // console.log('新增分组：', newGroupName);
+            const {data: {newGroupId}} = await addGroupApi(data)
+            message.success('添加分组成功')
             const newGroup = {id: newGroupId, name: newGroupName}
             setGroups([...groups, newGroup])
         }
@@ -44,18 +46,20 @@ export default function Left() {
         <div className="warpper">
             <User/>
             <ul className="functions">
-                <li className="group-item" data-id="-1"><i className="fa fa-sun-o"/><span>我的一天</span></li>
-                <li className="group-item" data-id="-2"><i className="fa fa-star-o"/><span>重要</span></li>
+                <GroupItem key={-1} groupId={-1} groupIcon={'fa-sun-o'} groupName={'我的一天'}
+                           setNowGroupName={setNowGroupName} setTasks={setTasks}
+                           setIsGroupPage={setIsGroupPage}/>
+                <GroupItem key={-2} groupId={-2} groupIcon={'fa-star-o'} groupName={'重要'}
+                           setNowGroupName={setNowGroupName} setTasks={setTasks}
+                           setIsGroupPage={setIsGroupPage}/>
             </ul>
             <ul className="groups">
                 {
-                    groups ?
-                        groups.map(group =>
-                            <li className="group-item" data-id="1" key={group.id}>
-                                <i className="fa fa-bars"/>
-                                <span>{group.name}</span>
-                            </li>
-                        ) : null
+                    groups.map(group => <GroupItem key={group.id} groupId={group.id} groupIcon={'fa-bars'}
+                                                   groupName={group.name} setNowGroupName={setNowGroupName}
+                                                   setTasks={setTasks}
+                                                   setIsGroupPage={setIsGroupPage}/>
+                    )
                 }
             </ul>
             <div className="addGroup group-item">

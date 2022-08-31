@@ -1,5 +1,3 @@
-import {UserLoginContext} from "../components/App";
-import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {message} from "antd";
 
@@ -34,4 +32,18 @@ instance.interceptors.response.use(function (response) {
     return new Promise(()=>{});
 });
 
+export function addUserLoginInterceptor(setUserLogin){
+    instance.interceptors.response.use(function (response) {
+        // 如果状态码为401说明cookie过期，提示重新登录
+        if (response.status === 401) {
+            message.error('cookie过期')
+            localStorage.removeItem('userLogin')
+            setUserLogin(false)
+        }
+        return response;
+    }, function (error) {
+        return new Promise(() => {
+        });
+    });
+}
 export default instance

@@ -1,33 +1,33 @@
 import fetchparams from './app.js';
+import instance from "./app.js";
 
-export const getGroups = async () => {
-    return await fetchparams('/groups', 'get')
+export const getGroupsApi = () => {
+    return instance.get('/groups')
 }
 
 /**
- * 
- * @param {string} name
- * @returns 
+ * @param  group
+ * @param  group.name
  */
-export const addGroupApi = async (name) => {
-    return await fetchparams('/groups', 'post', { name })
+export const addGroupApi = (group) => {
+    return instance.post('/groups', group)
 }
 
 /**
- * 
+ *
  * @param {Object} params
  * @param {number} params.id
  * @param {string} params.name
- * @returns 
+ * @returns
  */
-export const modifyGroup = async (params) => {
+export const modifyGroupApi = async (params) => {
     return await fetchparams(`/groups/${params.id}`, 'put', params)
 }
 
 /**
- * 
+ *
  * @param {number} id
- * @returns 
+ * @returns
  */
 export const deleteGroup = async (id) => {
     return await fetchparams(`/groups/${id}`, 'delete')

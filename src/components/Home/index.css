@@ -1,4 +1,4 @@
-@import url('../rest.css');
+@import url('../reset.css');
 /* 左中右三栏布局的代码 */
 @import url('Left/index.css');
 @import url('Center/index.css');
