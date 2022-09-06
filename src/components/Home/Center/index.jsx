@@ -2,7 +2,9 @@ import {useEffect, useRef, useState} from "react";
 import {getTodayTasks, getTodayTasksApi} from "../../../api/task";
 import {GroupToolbar} from "./GroupToolbar";
 
-export default function Center({nowGroupName, isGroupPage, tasks, setTasks}) {
+export default function Center({nowGroupName, setNowGroupName, isGroupPage, tasks, setTasks}) {
+    const [newTaskName, setNewTaskName] = useState('')
+
     useEffect(() => {
         document.title = '我的一天'
 
@@ -15,10 +17,14 @@ export default function Center({nowGroupName, isGroupPage, tasks, setTasks}) {
         getTodayTasks()
     }, [])
 
+    function handleChange(e) {
+        setNewTaskName(e.target.value)
+    }
+
     return <div className="contanier">
         <div className="mask"/>
 
-        <GroupToolbar isGroupPage={isGroupPage} nowGroupName={nowGroupName}/>
+        <GroupToolbar isGroupPage={isGroupPage} nowGroupName={nowGroupName} setNowGroupName={setNowGroupName}/>
 
         <ul className="tasks">
             {
@@ -53,7 +59,7 @@ export default function Center({nowGroupName, isGroupPage, tasks, setTasks}) {
         </ul>
         <div className="addTask task-item" style={isGroupPage ? {display: 'flex'} : {display: 'none'}}>
             <i className="fa fa-plus checkBox"/>
-            <input placeholder="添加任务" value="" autoComplete="off"/>
+            <input placeholder="添加任务" value={newTaskName} autoComplete="off" onChange={handleChange}/>
         </div>
     </div>
 }

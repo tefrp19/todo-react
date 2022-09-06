@@ -31,14 +31,15 @@ export default function Left({setNowGroupName, setIsGroupPage, setTasks}) {
             message.success('添加分组成功')
             const newGroup = {id: newGroupId, name: newGroupName}
             setGroups([...groups, newGroup])
+            setNewGroupName('')
         }
-        setNewGroupName('')
     }
 
     // 回车触发事件
     function handleKeyDown(e) {
         if (e.keyCode === 13) {
-            addNewGroup()
+            if (newGroupName === '') message.error('分组名不能为空')
+            else addNewGroup()
         }
     }
 

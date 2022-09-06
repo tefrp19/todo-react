@@ -1,5 +1,5 @@
 /*由于antd的全局样式的引入导致预期样式与实际样式不一致，添加部分样式*/
-.toolbarButton {
+.toolbarDetail {
     color: #000;
     font-size: 16px;
 }

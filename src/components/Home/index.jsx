@@ -12,7 +12,7 @@ export default function Home() {
     return <div className="root">
         <Left setNowGroupName={setNowGroupName} setTasks={setTasks} setIsGroupPage={setIsGroupPage}/>
         <main>
-            <Center nowGroupName={nowGroupName} isGroupPage={isGroupPage} tasks={tasks} setTasks={setTasks}/>
+            <Center nowGroupName={nowGroupName} setNowGroupName={setNowGroupName} isGroupPage={isGroupPage} tasks={tasks} setTasks={setTasks}/>
             {/*<Right/>*/}
         </main>
     </div>
