@@ -6,16 +6,21 @@
 
 ## react渲染组件流程（生命周期）
 
-类式组件：[渲染流程](https://zh-hans.reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class)
+类式组件：[渲染流程图](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
 
 函数式组件：
 
+​	第一次挂载：
+
 1. 执行函数内部代码
-2. 根据返回值渲染组件
-3. 执行`useEffect`中的函数（调用ComponentDidMount()）
-4. 
+	
+2. 根据返回值渲染组件（执行`return`后的代码）
 
+3. 执行`useEffect`中的函数（相当于调用`componentDidMount()`）
 
+  当state更新：
+
+1. 执行`useEffect`中的函数（设置第二个参数，相当于调用`componentDidUpdate()`）
 
 
 
@@ -24,6 +29,26 @@
 ### 阻止组件渲染
 
 类组件render()返回null该组件不会被渲染，但并不会影响生命周期，componentDidUpdate 依然会被调用
+
+
+
+### 检测state的值是否更改来更新视图
+
+
+React会检测state的值是否变化来更新视图。如果state是数组，由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是修改state后拷贝一份新的state再setState
+
+```jsx
+const [data,setData]=useState([])
+
+data.push(1)
+
+setData(data) // wrong
+
+const tempData=[...data]
+setData(tempData) // right
+```
+
+
 
 
 
@@ -258,34 +283,6 @@ React中的事件是经过封装的，默认采用了事件委托
 
 ### 第五步：添加反向数据流
 
-## [懒加载（性能优化eg:当loading时）](https://react.docschina.org/docs/code-splitting.html#reactlazy)
-
-## [错误边界](https://react.docschina.org/docs/error-boundaries.html)
-
-> 错误边界是一种 React 组件，这种组件**可以捕获并打印发生在其子组件树任何位置的 JavaScript 错误，并且，它会渲染出备用 UI**，而不是渲染那些崩溃了的子组件树。错误边界在渲染期间、生命周期方法和整个组件树的构造函数中捕获错误。
-
-`try` / `catch` 很棒但它仅能用于命令式代码（imperative code）：
-
-```js
-try {
-  showButton();
-} catch (error) {
-  // ...
-}
-```
-
-然而，React 组件是声明式的并且具体指出 *什么* 需要被渲染：
-
-```jsx
-<Button />
-```
-
-错误边界保留了 React 的声明性质，其行为符合你的预期。例如，即使一个错误发生在 `componentDidUpdate` 方法中，并且由某一个深层组件树的 `setState` 引起，其仍然能够冒泡到最近的错误边界。
-
-## [Portals](https://react.docschina.org/docs/portals.html)
-
-Portal 提供了一种将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案。
-
 
 
 ## [深入JSX](https://react.docschina.org/docs/jsx-in-depth.html)
@@ -344,13 +341,6 @@ function BlueDatePicker() {
 ### 函数柯里化定义
 
 柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数
-
-## [Babel工具](https://babel.docschina.org/docs/en/)
-
-Babel 是一个 JavaScript 编译器
-Babel 是一个工具链，主要用于在旧的浏览器或环境中将 ECMAScript 2015+ 代码转换为向后兼容版本的 JavaScript 代码
-
-
 
 ## 配置代理
 

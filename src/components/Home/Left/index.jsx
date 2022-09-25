@@ -8,8 +8,7 @@ import {message} from "antd";
 import {GroupItem} from "./GroupItem";
 
 
-export default function Left({setNowGroupName, setIsGroupPage, setTasks}) {
-    const [groups, setGroups] = useState([])
+export default function Left({groups, setGroups, setNowGroup, setTasks}) {
     const [newGroupName, setNewGroupName] = useState('')
     useEffect(() => {
         async function getGroups() {
@@ -28,10 +27,12 @@ export default function Left({setNowGroupName, setIsGroupPage, setTasks}) {
         if (newGroupName) {
             const data = {name: newGroupName}
             const {data: {newGroupId}} = await addGroupApi(data)
-            message.success('添加分组成功')
             const newGroup = {id: newGroupId, name: newGroupName}
-            setGroups([...groups, newGroup])
+            groups.push(newGroup)
+            const newGroups = [...groups]
+            setGroups(newGroups) // React会检测state的值是否变化来更新视图。由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是修改state后拷贝一份新的state再setState
             setNewGroupName('')
+            message.success('添加分组成功')
         }
     }
 
@@ -48,18 +49,18 @@ export default function Left({setNowGroupName, setIsGroupPage, setTasks}) {
             <User/>
             <ul className="functions">
                 <GroupItem key={-1} groupId={-1} groupIcon={'fa-sun-o'} groupName={'我的一天'}
-                           setNowGroupName={setNowGroupName} setTasks={setTasks}
-                           setIsGroupPage={setIsGroupPage}/>
+                           setNowGroup={setNowGroup} setTasks={setTasks}
+                />
                 <GroupItem key={-2} groupId={-2} groupIcon={'fa-star-o'} groupName={'重要'}
-                           setNowGroupName={setNowGroupName} setTasks={setTasks}
-                           setIsGroupPage={setIsGroupPage}/>
+                           setNowGroup={setNowGroup} setTasks={setTasks}
+                />
             </ul>
             <ul className="groups">
                 {
                     groups.map(group => <GroupItem key={group.id} groupId={group.id} groupIcon={'fa-bars'}
-                                                   groupName={group.name} setNowGroupName={setNowGroupName}
+                                                   groupName={group.name} setNowGroup={setNowGroup}
                                                    setTasks={setTasks}
-                                                   setIsGroupPage={setIsGroupPage}/>
+                        />
                     )
                 }
             </ul>
