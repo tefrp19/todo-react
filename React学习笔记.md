@@ -4,6 +4,23 @@
 
 
 
+## 框架的作用
+
+**[The deepest reason why modern JavaScript frameworks exist](https://medium.com/dailyjs/the-deepest-reason-why-modern-javascript-frameworks-exist-933b86ebc445)：Keeping the UI in sync with the state is hard 保持UI与状态（或称数据、JS对象）一致性是很难的**
+
+**Every time you change the state, you need to update the UI**.
+
+框架解决问题：**We define the UI in a single shot, not having to write particular UI code in every action, and we always get the same output due to a particular state**: the framework automatically updates it after the state changes.
+
+没有框架时写网页步骤：
+
+1. 先写html、css静态页面
+2. 操作dom，利用节点innerHTML属性生成元素
+
+这样有个问题，页面改动时还需先写静态html改样式再写入innerHTML
+
+dom元素删除后所绑定的事件也随即消失
+
 ## react渲染组件流程（生命周期）
 
 类式组件：[渲染流程图](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
@@ -328,19 +345,6 @@ const MyComponents = {
 function BlueDatePicker() {
   return <MyComponents.DatePicker color="blue" />;}
 ```
-
-## 高阶函数与函数柯里化
-
-### 高阶函数定义
-
-如果一个函数符合下面两个规范之一该函数称为高阶函数
-
-1. 函数接收的参数是一个函数
-2. 函数的返回值是一个函数
-
-### 函数柯里化定义
-
-柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数
 
 ## 配置代理
 

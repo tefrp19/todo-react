@@ -1,6 +1,8 @@
 import {useEffect, useRef, useState} from "react";
-import {getTodayTasks, getTodayTasksApi} from "../../../api/task";
+import {addTaskApi, getTodayTasks, getTodayTasksApi} from "../../../api/task";
 import {GroupToolbar} from "./GroupToolbar";
+import {message} from "antd";
+import {TaskItem} from "./TaskItem";
 
 export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks, setTasks}) {
     const [newTaskName, setNewTaskName] = useState('')
@@ -11,7 +13,6 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
         async function getTodayTasks() {
             const {data} = await getTodayTasksApi()
             setTasks(data)
-
         }
 
         getTodayTasks()
@@ -21,23 +22,53 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
         setNewTaskName(e.target.value)
     }
 
+    async function addTask() {
+        let newTask = {groupId: nowGroup.id, name: newTaskName}
+        const {data: {newTaskId}} = await addTaskApi(newTask)
+        setNewTaskName('')
+        message.success('添加成功')
+        newTask = {
+            id: newTaskId,
+            name: newTaskName,
+            group_id: nowGroup,
+            check: 0,
+            deadline: null,
+            important: 0,
+            note: null,
+            today: 0
+        }
+        setTasks([...tasks, newTask])
+    }
+
+    function handleBlur() {
+        if (newTaskName !== '') addTask()
+    }
+
+    function handleKeyDown(e) {
+        if (e.keyCode === 13) {
+            if (newTaskName === '') {
+                message.error('任务名不能为空')
+                return
+            }
+            addTask()
+        }
+    }
+
     return <div className="contanier">
         <div className="mask"/>
 
-        <GroupToolbar groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup} setTasks={setTasks}
+        <GroupToolbar groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
+                      setTasks={setTasks}
         />
 
         <ul className="tasks">
             {
                 tasks.map(task => {
-                        if (!task.check) return <li className="task-item" key={task.id}>
-                            <div className="checkBox">
-                                <i className="fa fa-circle-thin"/>
-                                <i className="fa fa-check-circle-o"/></div>
-                            <span className="task-name">{task.name}</span>
-                            <div className="importance" style={task.important ? {color: '#0062cc'} : null}><i
-                                className={`fa fa-star${task.important ? '' : '-o'}`}/></div>
-                        </li>
+                        if (!task.check) {
+                            const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}/>
+                        }
+
                     }
                 )
             }
@@ -46,21 +77,18 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
         <ul className="tasks checked">
             {
                 tasks.map(task => {
-                        if (task.check) return <li className="task-item" key={task.id}>
-                            <div className="checkBox">
-                                <i className="fa fa-check-circle"/>
-                            </div>
-                            <span className="task-name">{task.name}</span>
-                            <div className="importance" style={task.important ? {color: '#0062cc'} : null}><i
-                                className={`fa fa-star${task.important ? '' : '-o'}`}/></div>
-                        </li>
+                        if (task.check) {
+                            const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}/>
+                        }
                     }
                 )
             }
         </ul>
         <div className="addTask task-item" style={nowGroup.id > 0 ? {display: 'flex'} : {display: 'none'}}>
             <i className="fa fa-plus checkBox"/>
-            <input placeholder="添加任务" value={newTaskName} autoComplete="off" onChange={handleChange}/>
+            <input placeholder="添加任务" value={newTaskName} autoComplete="off" onChange={handleChange} onBlur={handleBlur}
+                   onKeyDown={handleKeyDown}/>
         </div>
     </div>
 }
