@@ -2,7 +2,6 @@
 /* 平板 */
 @media screen and (max-width: 1200px) {
 
-
     .task-detail {
         /* display: none; */
         position: absolute;
@@ -13,15 +12,6 @@
         overflow: hidden;
     }
 
-    /* 右侧栏不展示 */
-    .rightColumn-exited {
-        width: 0;
-    }
-
-    /* 右侧栏展示 */
-    .rightColumn-entered {
-        width: 20rem;
-    }
 }
 
 /* 手机 */

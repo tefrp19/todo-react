@@ -10,12 +10,15 @@ export function GroupToolbar({groups, setGroups, nowGroup, setNowGroup, setTasks
     const groupNameRef = useRef()
 
     useEffect(() => {
-        document.addEventListener('click', (e) => {
+        const fn = (e) => {
             if (e.target !== toolbarButtonRef.current) {
                 toolbarDetail.current.style.height = '0px'
             }
-        })
-
+        }
+        document.addEventListener('click', fn)
+        return () => {
+            document.removeEventListener('click', fn)
+        }
     }, [])
 
     async function modifyGroupName() {

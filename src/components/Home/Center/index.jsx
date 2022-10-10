@@ -4,7 +4,7 @@ import {GroupToolbar} from "./GroupToolbar";
 import {message} from "antd";
 import {TaskItem} from "./TaskItem";
 
-export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks, setTasks}) {
+export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks, setTasks,setShowRightColumn,setTaskDetail}) {
     const [newTaskName, setNewTaskName] = useState('')
 
     useEffect(() => {
@@ -66,7 +66,7 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
                 tasks.map(task => {
                         if (!task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
-                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}/>
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
                         }
 
                     }
@@ -79,7 +79,7 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
                 tasks.map(task => {
                         if (task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
-                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}/>
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
                         }
                     }
                 )

@@ -8,7 +8,7 @@ import {message} from "antd";
 import {GroupItem} from "./GroupItem";
 
 
-export default function Left({groups, setGroups, setNowGroup, setTasks}) {
+export default function Left({groups, setGroups, setNowGroup, setTasks,setShowRightColumn}) {
     const [newGroupName, setNewGroupName] = useState('')
     useEffect(() => {
         async function getGroups() {
@@ -49,17 +49,17 @@ export default function Left({groups, setGroups, setNowGroup, setTasks}) {
             <User/>
             <ul className="functions">
                 <GroupItem key={-1} groupId={-1} groupIcon={'fa-sun-o'} groupName={'我的一天'}
-                           setNowGroup={setNowGroup} setTasks={setTasks}
+                           setNowGroup={setNowGroup} setTasks={setTasks} setShowRightColumn={setShowRightColumn}
                 />
                 <GroupItem key={-2} groupId={-2} groupIcon={'fa-star-o'} groupName={'重要'}
-                           setNowGroup={setNowGroup} setTasks={setTasks}
+                           setNowGroup={setNowGroup} setTasks={setTasks} setShowRightColumn={setShowRightColumn}
                 />
             </ul>
             <ul className="groups">
                 {
                     groups.map(group => <GroupItem key={group.id} groupId={group.id} groupIcon={'fa-bars'}
                                                    groupName={group.name} setNowGroup={setNowGroup}
-                                                   setTasks={setTasks}
+                                                   setTasks={setTasks} setShowRightColumn={setShowRightColumn}
                         />
                     )
                 }

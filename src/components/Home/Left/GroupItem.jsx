@@ -1,10 +1,10 @@
 import {getImportantTasksApi, getTasksApi, getTodayTasksApi} from "../../../api/task";
 
-export function GroupItem({groupId, groupIcon, groupName, setNowGroup, setTasks}) {
+export function GroupItem({groupId, groupIcon, groupName, setNowGroup, setTasks,setShowRightColumn}) {
 
     async function handleClick() {
+        setShowRightColumn(false)
         setNowGroup({id: groupId, name: groupName})
-        // setNowGroupName(groupName)
         document.title = `分组：${groupName}`
         let tasks
         switch (groupId) {

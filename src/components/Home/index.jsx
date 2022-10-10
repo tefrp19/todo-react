@@ -8,13 +8,15 @@ export default function Home() {
     const [groups, setGroups] = useState([])
     const [nowGroup, setNowGroup] = useState({id: -1, name: '我的一天'})
     const [tasks, setTasks] = useState([])
-
+    const [showRightColumn, setShowRightColumn] = useState(false)
+    const [taskDetail, setTaskDetail] = useState({})
     return <div className="root">
-        <Left groups={groups} setGroups={setGroups} setNowGroup={setNowGroup} setTasks={setTasks}/>
+        <Left groups={groups} setGroups={setGroups} setNowGroup={setNowGroup} setTasks={setTasks}
+              setShowRightColumn={setShowRightColumn}/>
         <main>
             <Center groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
-                    tasks={tasks} setTasks={setTasks}/>
-            {/*<Right/>*/}
+                    tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
+            <Right showRightColumn={showRightColumn} setShowRightColumn={setShowRightColumn} taskDetail={taskDetail} setTaskDetail={setTaskDetail} tasks={tasks} setTasks={setTasks} nowGroup={nowGroup}/>
         </main>
     </div>
 }
