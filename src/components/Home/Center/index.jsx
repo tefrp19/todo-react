@@ -4,8 +4,18 @@ import {GroupToolbar} from "./GroupToolbar";
 import {message} from "antd";
 import {TaskItem} from "./TaskItem";
 
-export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks, setTasks,setShowRightColumn,setTaskDetail}) {
+export default function Center({
+                                   groups,
+                                   setGroups,
+                                   nowGroup,
+                                   setNowGroup,
+                                   tasks,
+                                   setTasks,
+                                   setShowRightColumn,
+                                   setTaskDetail
+                               }) {
     const [newTaskName, setNewTaskName] = useState('')
+    const [showMask, setShowMask] = useState(false)
 
     useEffect(() => {
         document.title = '我的一天'
@@ -16,6 +26,20 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
         }
 
         getTodayTasks()
+    }, [])
+
+    // 遮罩层绑定点击事件
+    const maskRef = useRef()
+    useEffect(() => {
+        maskRef.current.addEventListener('click', () => {
+            console.log(123)
+            console.log(window.innerWidth)
+            // if (window.innerWidth<1200){
+            //     setShowMask(true)
+            // }
+            setShowMask(false)
+        })
+
     }, [])
 
     function handleChange(e) {
@@ -55,7 +79,9 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
     }
 
     return <div className="contanier">
-        <div className="mask"/>
+        <div className="mask"
+             style={showMask ? {display: 'block'} : {display: 'none'}} ref={maskRef}
+        />
 
         <GroupToolbar groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
                       setTasks={setTasks}
@@ -66,7 +92,8 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
                 tasks.map(task => {
                         if (!task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
-                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}
+                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
                         }
 
                     }
@@ -79,7 +106,8 @@ export default function Center({groups, setGroups, nowGroup, setNowGroup, tasks,
                 tasks.map(task => {
                         if (task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
-                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
+                            return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}
+                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
                         }
                     }
                 )
