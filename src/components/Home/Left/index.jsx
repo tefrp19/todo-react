@@ -8,7 +8,8 @@ import {message} from "antd";
 import {GroupItem} from "./GroupItem";
 
 
-export default function Left({groups, setGroups, setNowGroup, setTasks,setShowRightColumn}) {
+export default function Left(props) {
+    const {groups, setGroups, setNowGroup, setTasks, setShowRightColumn, showLeftColumn} = props
     const [newGroupName, setNewGroupName] = useState('')
     useEffect(() => {
         async function getGroups() {
@@ -44,7 +45,7 @@ export default function Left({groups, setGroups, setNowGroup, setTasks,setShowRi
         }
     }
 
-    return <aside className="leftColumn-exited">
+    return <aside className={showLeftColumn ? 'leftColumn-entered' : 'leftColumn-exited'}>
         <div className="warpper">
             <User/>
             <ul className="functions">

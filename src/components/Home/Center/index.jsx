@@ -4,16 +4,18 @@ import {GroupToolbar} from "./GroupToolbar";
 import {message} from "antd";
 import {TaskItem} from "./TaskItem";
 
-export default function Center({
-                                   groups,
-                                   setGroups,
-                                   nowGroup,
-                                   setNowGroup,
-                                   tasks,
-                                   setTasks,
-                                   setShowRightColumn,
-                                   setTaskDetail
-                               }) {
+export default function Center(props) {
+    const {
+        groups,
+        setGroups,
+        nowGroup,
+        setNowGroup,
+        tasks,
+        setTasks,
+        setShowRightColumn,
+        setTaskDetail,
+        setShowLeftColumn,
+    } = props
     const [newTaskName, setNewTaskName] = useState('')
     const [showMask, setShowMask] = useState(false)
 
@@ -32,12 +34,9 @@ export default function Center({
     const maskRef = useRef()
     useEffect(() => {
         maskRef.current.addEventListener('click', () => {
-            console.log(123)
-            console.log(window.innerWidth)
-            // if (window.innerWidth<1200){
-            //     setShowMask(true)
-            // }
             setShowMask(false)
+            setShowRightColumn(false)
+            setShowLeftColumn(false)
         })
 
     }, [])
@@ -84,7 +83,7 @@ export default function Center({
         />
 
         <GroupToolbar groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
-                      setTasks={setTasks}
+                      setTasks={setTasks} setShowLeftColumn={setShowLeftColumn} setShowMask={setShowMask}
         />
 
         <ul className="tasks">
@@ -93,7 +92,8 @@ export default function Center({
                         if (!task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
                             return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}
-                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
+                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}
+                                             setShowMask={setShowMask}/>
                         }
 
                     }
@@ -107,7 +107,8 @@ export default function Center({
                         if (task.check) {
                             const taskIno = {id: task.id, checked: task.check, name: task.name, important: task.important}
                             return <TaskItem key={task.id} taskInfo={taskIno} tasks={tasks} setTasks={setTasks}
-                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
+                                             setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}
+                                             setShowMask={setShowMask}/>
                         }
                     }
                 )

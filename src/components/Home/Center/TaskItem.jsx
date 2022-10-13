@@ -1,7 +1,7 @@
 import {modifyTaskApi} from "../../../api/task";
 
 export function TaskItem(props) {
-    const {taskInfo, tasks, setTasks, setShowRightColumn, setTaskDetail} = props
+    const {taskInfo, tasks, setTasks, setShowRightColumn, setTaskDetail, setShowMask} = props
     const {id, checked, name, important} = taskInfo
 
     async function changeCheck() {
@@ -22,6 +22,9 @@ export function TaskItem(props) {
 
     function showTaskDetail() {
         setShowRightColumn(true)
+        if (window.innerWidth <= 1200) {
+            setShowMask(true)
+        }
         const taskDetail = tasks.find(taks => taks.id === id)
         setTaskDetail(taskDetail)
     }

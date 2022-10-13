@@ -4,7 +4,17 @@ import {message, Modal} from "antd";
 import {deleteGroupApi, modifyGroupApi} from "../../../api/group";
 import {getTodayTasksApi} from "../../../api/task";
 
-export function GroupToolbar({groups, setGroups, nowGroup, setNowGroup, setTasks}) {
+export function GroupToolbar(props) {
+    const {
+        groups,
+        setGroups,
+        nowGroup,
+        setNowGroup,
+        setTasks,
+        setShowLeftColumn,
+        setShowMask,
+    } = props
+
     const toolbarDetail = useRef()
     const toolbarButtonRef = useRef()
     const groupNameRef = useRef()
@@ -77,11 +87,13 @@ export function GroupToolbar({groups, setGroups, nowGroup, setNowGroup, setTasks
         });
     }
 
+    function showLeftColumn() {
+        setShowLeftColumn(true)
+        setShowMask(true)
+    }
+
     return <div className="groupToolbar">
-        <div className="menu" onClick={() => {
-            console.log(123)
-        }
-        }><i className="fa fa-bars" aria-hidden="true"/></div>
+        <div className="menu" onClick={showLeftColumn}><i className="fa fa-bars" aria-hidden="true"/></div>
         <div className="groupName" ref={groupNameRef}
              contentEditable={nowGroup.id > 0 ? "true" : "false"}
              onBlur={handleBlur} onKeyDown={handleKeyDown}

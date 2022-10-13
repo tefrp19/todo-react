@@ -9,14 +9,17 @@ export default function Home() {
     const [nowGroup, setNowGroup] = useState({id: -1, name: '我的一天'})
     const [tasks, setTasks] = useState([])
     const [showRightColumn, setShowRightColumn] = useState(false)
+    const [showLeftColumn, setShowLeftColumn] = useState(false) // 手机端下是否显示左侧栏
     const [taskDetail, setTaskDetail] = useState({})
     return <div className="root">
         <Left groups={groups} setGroups={setGroups} setNowGroup={setNowGroup} setTasks={setTasks}
-              setShowRightColumn={setShowRightColumn}/>
+              setShowRightColumn={setShowRightColumn} showLeftColumn={showLeftColumn}/>
         <main>
             <Center groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
-                    tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} setTaskDetail={setTaskDetail}/>
-            <Right showRightColumn={showRightColumn} setShowRightColumn={setShowRightColumn} taskDetail={taskDetail} setTaskDetail={setTaskDetail} tasks={tasks} setTasks={setTasks} nowGroup={nowGroup}/>
+                    tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn}
+                    setTaskDetail={setTaskDetail} setShowLeftColumn={setShowLeftColumn}/>
+            <Right showRightColumn={showRightColumn} setShowRightColumn={setShowRightColumn} taskDetail={taskDetail}
+                   setTaskDetail={setTaskDetail} tasks={tasks} setTasks={setTasks} nowGroup={nowGroup}/>
         </main>
     </div>
 }
