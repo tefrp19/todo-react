@@ -11,6 +11,7 @@ export default function Right(props) {
         setTaskDetail,
         setTasks,
         nowGroup,
+        setShowMask,
     } = props
     const {id, name, check, important, deadline, today, note} = taskDetail
 
@@ -99,6 +100,7 @@ export default function Right(props) {
                 setTasks([...tasks])
                 message.success('删除成功')
                 setShowRightColumn(false)
+                setShowMask(false)
             },
 
         });

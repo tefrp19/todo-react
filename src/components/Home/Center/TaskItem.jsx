@@ -1,4 +1,5 @@
 import {modifyTaskApi} from "../../../api/task";
+import {message} from "antd";
 
 export function TaskItem(props) {
     const {taskInfo, tasks, setTasks, setShowRightColumn, setTaskDetail, setShowMask} = props
@@ -10,6 +11,7 @@ export function TaskItem(props) {
         const target = tasks.find(task => task.id === id)
         target.check = target.check ? 0 : 1
         setTasks([...tasks])
+        message.success('修改成功')
     }
 
     async function changeImportant() {

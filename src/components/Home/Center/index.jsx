@@ -15,9 +15,10 @@ export default function Center(props) {
         setShowRightColumn,
         setTaskDetail,
         setShowLeftColumn,
+        showMask,
+        setShowMask
     } = props
     const [newTaskName, setNewTaskName] = useState('')
-    const [showMask, setShowMask] = useState(false)
 
     useEffect(() => {
         document.title = '我的一天'
