@@ -3,8 +3,9 @@ import {message} from "antd";
 
 // 请求实例
 const instance = axios.create({
-    baseURL: 'http://127.0.0.1:3000',
-    timeout: 40000// 设置在4000毫秒内请求数据，如果没有请求成功就执行错误函数
+    baseURL: process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'http://121.41.94.106:8000',
+    timeout: 40000 , // 设置在4000毫秒内请求数据，如果没有请求成功就执行错误函数
+    withCredentials:true, // 使用cookie
 })
 
 // 添加请求拦截器

@@ -81,6 +81,8 @@ export default function Right(props) {
             taskDetail.note = newNote
             await modifyTaskApi(taskDetail)
             setTaskDetail({...taskDetail})
+            tasks.find(task => task.id === id).note = taskDetail.note
+            setTasks([...tasks])
             message.success('修改成功')
         }
     }
@@ -133,7 +135,7 @@ export default function Right(props) {
             </div>
 
             <div className="modify-deadline task-detail-item">
-                <input type="date" name="deadline"  value={deadline||''} onChange={modifyDeadline}/><br/>
+                <input type="date" name="deadline" value={deadline || ''} onChange={modifyDeadline}/><br/>
             </div>
             <button className="add-to-today task-detail-item" style={today ? {color: '#0062cc'} : null}
                     onClick={changeToday}>
@@ -141,7 +143,7 @@ export default function Right(props) {
                 <span>{today ? '取消添加到“我的一天”' : '添加到“我的一天”'}</span>
             </button>
 
-            <textarea className="modify-note task-detail-item" value={note||''} autoComplete="off" placeholder="添加备注"
+            <textarea className="modify-note task-detail-item" value={note || ''} autoComplete="off" placeholder="添加备注"
                       onChange={(e) => {
                           taskDetail.note = e.target.value
                           setTaskDetail({...taskDetail})

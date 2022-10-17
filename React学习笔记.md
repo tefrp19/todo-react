@@ -346,34 +346,6 @@ function BlueDatePicker() {
   return <MyComponents.DatePicker color="blue" />;}
 ```
 
-## 配置代理
-
-`package.json`中配置代理：e.g."proxy": "http://127.0.0.1:8000"
-
-
-
-## 项目工程化
-
-### [webpack静态模块打包工具](https://webpack.docschina.org/concepts/)
-
-### 开发模式（环境）和生产模式（环境）
-
-#### npm start
-
-在开发环境下对项目根目录执行`npm start`，可以实时观看代码更新情况
-
-#### npm build
-
-对项目根目录执行`npm build`，会生成文件夹build，打包发布
-
-`npm install -g serve`
-
-`serve build`
-
-## [虚拟滚动](https://cloud.tencent.com/developer/article/1658852)
-
-**虚拟滚动——指的是只渲染可视区域的列表项，非可见区域的**完全不渲染，在滚动条滚动时动态更新列表项。
-
 
 
 ## axios
@@ -383,3 +355,24 @@ function BlueDatePicker() {
 1、data参数适用于 post、put、patch请求，使用data时url中不会携带参数，data是将参数添加到请求体（body）中
 
 2、params参数适用于get请求，params将参数添加到url的请求字符串中，因此**使用params时url中会携带参数**
+
+
+
+## 前端项目开发部署
+
+### 配置代理
+
+`package.json`中配置代理：e.g."proxy": "http://127.0.0.1:8000"
+
+#### npm start
+
+在开发环境下对项目根目录执行`npm start`（实则执行`npm run start`），可以实时观看代码更新情况
+
+#### npm build
+
+对项目根目录执行`npm build`，会生成文件夹build，打包发布
+
+`npm install -g serve`
+
+`serve build [--listen 端口号]`
+

@@ -13,6 +13,7 @@ export default function Left(props) {
     const [newGroupName, setNewGroupName] = useState('')
     useEffect(() => {
         async function getGroups() {
+            // debugger
             const {data: groups} = await getGroupsApi()
             setGroups(groups)
         }
