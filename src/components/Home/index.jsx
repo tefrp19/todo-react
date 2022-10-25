@@ -17,12 +17,13 @@ export default function Home() {
         <Left groups={groups} setGroups={setGroups} setNowGroup={setNowGroup} setTasks={setTasks}
               setShowRightColumn={setShowRightColumn} showLeftColumn={showLeftColumn}/>
         <main>
-            <Center groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
+            <Center setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
                     tasks={tasks} setTasks={setTasks} setShowRightColumn={setShowRightColumn} showMask={showMask}
                     setShowMask={setShowMask}
                     setTaskDetail={setTaskDetail} setShowLeftColumn={setShowLeftColumn}/>
             <Right showRightColumn={showRightColumn} setShowRightColumn={setShowRightColumn} taskDetail={taskDetail}
-                   setTaskDetail={setTaskDetail} tasks={tasks} setTasks={setTasks} nowGroup={nowGroup} setShowMask={setShowMask}/>
+                   setTaskDetail={setTaskDetail} tasks={tasks} setTasks={setTasks} nowGroup={nowGroup}
+                   setShowMask={setShowMask}/>
         </main>
     </div>
 }

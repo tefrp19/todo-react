@@ -54,7 +54,7 @@
     }
 
     .addTask {
-        width: 94%;
+        width: calc(100% - 2rem);
     }
 
 

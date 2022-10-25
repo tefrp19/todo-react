@@ -25,8 +25,10 @@ export default function Right(props) {
             taskDetail.name = newName
             await modifyTaskApi(taskDetail)
             setTaskDetail({...taskDetail})
-            tasks.find(task => task.id === id).name = taskDetail.name
-            setTasks([...tasks])
+            setTasks(tasks => {
+                tasks.find(task => task.id === id).name = taskDetail.name
+                return [...tasks]
+            })
             message.success('修改成功')
         }
     }
@@ -35,9 +37,11 @@ export default function Right(props) {
         await changeStatus('important')
         // 如果当前分组为“重要分组”则重新获取数据更新视图
         if (nowGroup.id === -2) {
-            const newTasks = (await getImportantTasksApi()).data
-            setTasks(newTasks)
+            const index = tasks.findIndex(task => task.id === id)
+            tasks.splice(index, 1)
+            setTasks([...tasks])
             setShowRightColumn(false)
+            setShowMask(false)
         }
     }
 
@@ -50,11 +54,13 @@ export default function Right(props) {
 
     async function changeToday() {
         await changeStatus('today')
-        // 如果当前分组为“今天分组”则重新获取数据更新视图
+        // 如果当前分组为“我的一天”则重新获取数据更新视图
         if (nowGroup.id === -1) {
-            const newTasks = (await getTodayTasksApi()).data
-            setTasks(newTasks)
+            const index = tasks.findIndex(task => task.id === id)
+            tasks.splice(index, 1)
+            setTasks([...tasks])
             setShowRightColumn(false)
+            setShowMask(false)
         }
     }
 

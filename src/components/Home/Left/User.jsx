@@ -17,11 +17,17 @@ export default function User() {
         }
 
         getUsername()
-        document.addEventListener('click', function (e) {
+
+        function showAccountCrtl(e) {
             if (e.target !== avatarRef.current && e.target !== imgRef.current) {
                 setShowAccountCrtl(false)
             }
-        })
+        }
+
+        document.addEventListener('click', showAccountCrtl)
+        return () => {
+            document.removeEventListener('click', showAccountCrtl)
+        }
 
     }, [])
 

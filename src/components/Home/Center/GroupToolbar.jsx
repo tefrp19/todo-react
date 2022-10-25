@@ -6,7 +6,6 @@ import {getTodayTasksApi} from "../../../api/task";
 
 export function GroupToolbar(props) {
     const {
-        groups,
         setGroups,
         nowGroup,
         setNowGroup,
@@ -32,16 +31,14 @@ export function GroupToolbar(props) {
     }, [])
 
     async function modifyGroupName() {
-        const newGroupName = groupNameRef.current.innerText
-        for (const group of groups) {
-            if (group.id === nowGroup.id) {
-                group.name = newGroupName
-                break
-            }
-        }
+        const newGroupName = groupNameRef.current.textContent
+        console.log(newGroupName)
         setNowGroup({id: nowGroup.id, name: newGroupName})
         await modifyGroupApi({id: nowGroup.id, name: newGroupName})
-        setGroups(groups)
+        setGroups(groups => {
+            groups.find(group => group.id === nowGroup.id).name = newGroupName
+            return [...groups]
+        })
         message.success('修改成功')
 
     }
@@ -73,15 +70,12 @@ export function GroupToolbar(props) {
             okType: 'danger',
 
             async onOk() {
-                const index = groups.findIndex(group => group.id === nowGroup.id)
-                groups.splice(index, 1)
                 await deleteGroupApi(nowGroup.id)
-                setGroups([...groups])
+                setGroups(groups => groups.filter(group => group.id !== nowGroup.id))
                 message.success('删除成功')
                 const {data} = await getTodayTasksApi()
                 setNowGroup({id: -1, name: '我的一天'})
                 setTasks(data)
-
             },
 
         });

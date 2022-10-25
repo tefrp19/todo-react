@@ -6,7 +6,6 @@ import {TaskItem} from "./TaskItem";
 
 export default function Center(props) {
     const {
-        groups,
         setGroups,
         nowGroup,
         setNowGroup,
@@ -34,12 +33,16 @@ export default function Center(props) {
     // 遮罩层绑定点击事件
     const maskRef = useRef()
     useEffect(() => {
-        maskRef.current.addEventListener('click', () => {
+        const showMask = () => {
             setShowMask(false)
             setShowRightColumn(false)
             setShowLeftColumn(false)
-        })
-
+        }
+        const maskNode = maskRef.current
+        maskNode.addEventListener('click', showMask)
+        return () => {
+            maskNode.removeEventListener('click', showMask)
+        }
     }, [])
 
     function handleChange(e) {
@@ -83,7 +86,7 @@ export default function Center(props) {
              style={showMask ? {display: 'block'} : {display: 'none'}} ref={maskRef}
         />
 
-        <GroupToolbar groups={groups} setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
+        <GroupToolbar setGroups={setGroups} nowGroup={nowGroup} setNowGroup={setNowGroup}
                       setTasks={setTasks} setShowLeftColumn={setShowLeftColumn} setShowMask={setShowMask}
         />
 
