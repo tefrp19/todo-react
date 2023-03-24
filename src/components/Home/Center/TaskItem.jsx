@@ -20,6 +20,7 @@ export function TaskItem(props) {
         const target = tasks.find(task => task.id === id)
         target.important = target.important ? 0 : 1
         setTasks([...tasks])
+        message.success('修改成功')
     }
 
     function showTaskDetail() {

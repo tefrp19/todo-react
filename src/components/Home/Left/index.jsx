@@ -30,9 +30,7 @@ export default function Left(props) {
             const data = {name: newGroupName}
             const {data: {newGroupId}} = await addGroupApi(data)
             const newGroup = {id: newGroupId, name: newGroupName}
-            groups.push(newGroup)
-            const newGroups = [...groups]
-            setGroups(newGroups) // React会检测state的值是否变化来更新视图。由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是修改state后拷贝一份新的state再setState
+            setGroups(groups => [...groups, newGroup]) // React会检测state的值是否变化来更新视图。由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是：https://beta.reactjs.org/learn/updating-arrays-in-state#updating-arrays-without-mutation
             setNewGroupName('')
             message.success('添加分组成功')
         }

@@ -54,6 +54,7 @@
     height: 3rem;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 .modify-deadline input {
