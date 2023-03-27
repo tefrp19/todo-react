@@ -1,16 +1,15 @@
 import "./index.css"
-import avatar from "../img/avatar.png"
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect} from "react";
 import User from "./User";
-import {addGroupApi, getGroups, getGroupsApi} from "../../../api/group";
-import {message} from "antd";
+import {addGroupApi, getGroupsApi} from "../../../api/group";
 import {GroupItem} from "./GroupItem";
+import {useBlurInput} from "../../../hooks/useBlurInput";
 
 
 export default function Left(props) {
     const {groups, setGroups, setNowGroup, setTasks, setShowRightColumn, showLeftColumn} = props
-    const [newGroupName, setNewGroupName] = useState('')
+    const inputPros = useBlurInput(addNewGroup)
+
     useEffect(() => {
         async function getGroups() {
             // debugger
@@ -21,28 +20,17 @@ export default function Left(props) {
         getGroups()
     }, [])
 
-    function handleChange(e) {
-        setNewGroupName(e.target.value)
+     function addNewGroup(newGroupName) {
+         return new Promise((resolve, reject)=>{
+             const data = {name: newGroupName}
+              resolve(addGroupApi(data))
+         }).then(res=>{
+             const {data: {newGroupId}} =res
+             const newGroup = {id: newGroupId, name: newGroupName}
+             setGroups(groups => [...groups, newGroup]) // React会检测state的值是否变化来更新视图。由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是：https://beta.reactjs.org/learn/updating-arrays-in-state#updating-arrays-without-mutation
+         })
     }
 
-    async function addNewGroup() {
-        if (newGroupName) {
-            const data = {name: newGroupName}
-            const {data: {newGroupId}} = await addGroupApi(data)
-            const newGroup = {id: newGroupId, name: newGroupName}
-            setGroups(groups => [...groups, newGroup]) // React会检测state的值是否变化来更新视图。由于数组是引用值，直接在原数组上修改元素，原数组的引用也不会改变，React则认为state未发生改变不会更新视图，正确做法是：https://beta.reactjs.org/learn/updating-arrays-in-state#updating-arrays-without-mutation
-            setNewGroupName('')
-            message.success('添加分组成功')
-        }
-    }
-
-    // 回车触发事件
-    function handleKeyDown(e) {
-        if (e.keyCode === 13) {
-            if (newGroupName === '') message.error('分组名不能为空')
-            else addNewGroup()
-        }
-    }
 
     return <aside className={showLeftColumn ? 'leftColumn-entered' : 'leftColumn-exited'}>
         <div className="warpper">
@@ -66,8 +54,7 @@ export default function Left(props) {
             </ul>
             <div className="addGroup group-item">
                 <i className="fa fa-plus"/>
-                <input placeholder="新建分组" value={newGroupName} autoComplete="off" onChange={handleChange}
-                       onBlur={addNewGroup} onKeyDown={handleKeyDown}/>
+                <input placeholder="新建分组" {...inputPros}/>
             </div>
         </div>
     </aside>

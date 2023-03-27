@@ -3,6 +3,7 @@ import {addTaskApi, getTodayTasks, getTodayTasksApi} from "../../../api/task";
 import {GroupToolbar} from "./GroupToolbar";
 import {message} from "antd";
 import {TaskItem} from "./TaskItem";
+import {useBlurInput} from "../../../hooks/useBlurInput";
 
 export default function Center(props) {
     const {
@@ -17,7 +18,7 @@ export default function Center(props) {
         showMask,
         setShowMask
     } = props
-    const [newTaskName, setNewTaskName] = useState('')
+    const inputPros = useBlurInput(addTask)
 
     useEffect(() => {
         document.title = '我的一天'
@@ -45,14 +46,9 @@ export default function Center(props) {
         }
     }, [])
 
-    function handleChange(e) {
-        setNewTaskName(e.target.value)
-    }
-
-    async function addTask() {
+    async function addTask(newTaskName) {
         let newTask = {groupId: nowGroup.id, name: newTaskName}
         const {data: {newTaskId}} = await addTaskApi(newTask)
-        setNewTaskName('')
         message.success('添加成功')
         newTask = {
             id: newTaskId,
@@ -64,21 +60,27 @@ export default function Center(props) {
             note: null,
             today: 0
         }
-        setTasks([...tasks, newTask])
+        setTasks(tasks => [...tasks, newTask])
     }
 
-    function handleBlur() {
-        if (newTaskName !== '') addTask()
-    }
-
-    function handleKeyDown(e) {
-        if (e.keyCode === 13) {
-            if (newTaskName === '') {
-                message.error('任务名不能为空')
-                return
+    function addTask(newTaskName) {
+        return new Promise((resolve, reject) => {
+            const data = {groupId: nowGroup.id, name: newTaskName}
+            resolve(addTaskApi(data))
+        }).then(res => {
+            const {data: {newTaskId}} = res
+            const newTask = {
+                id: newTaskId,
+                name: newTaskName,
+                group_id: nowGroup,
+                check: 0,
+                deadline: null,
+                important: 0,
+                note: null,
+                today: 0
             }
-            addTask()
-        }
+            setTasks(tasks => [...tasks, newTask])
+        })
     }
 
     return <div className="contanier">
@@ -120,8 +122,7 @@ export default function Center(props) {
         </ul>
         <div className="addTask task-item" style={nowGroup.id > 0 ? {display: 'flex'} : {display: 'none'}}>
             <i className="fa fa-plus checkBox"/>
-            <input placeholder="添加任务" value={newTaskName} autoComplete="off" onChange={handleChange} onBlur={handleBlur}
-                   onKeyDown={handleKeyDown}/>
+            <input placeholder="添加任务" {...inputPros}/>
         </div>
     </div>
 }
