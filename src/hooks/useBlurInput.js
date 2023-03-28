@@ -23,8 +23,9 @@ export function useBlurInput(fn) {
                 message.error('输入不能为空')
                 return
             }
-            fn()
-            done()
+            fn(inputVlue).then(() => {
+                done()
+            })
         }
     }
 
