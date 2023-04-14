@@ -9,7 +9,6 @@ export const UserLoginContext = React.createContext(false) // 创建全局contex
 
 export default function App() {
     const [userLogin, setUserLogin] = useState(false)
-
     useEffect(() => {
         if (localStorage.getItem('userLogin')) {
             setUserLogin(true)
@@ -18,13 +17,13 @@ export default function App() {
         }
 
         addUserLoginInterceptor(setUserLogin)
-
     }, [])
 
     return <UserLoginContext.Provider value={setUserLogin}>
-        {userLogin ?
-            <Home/> :
-            <PreHome/>
+        {
+            userLogin ?
+                <Home/> :
+                <PreHome/>
         }
     </UserLoginContext.Provider>
 

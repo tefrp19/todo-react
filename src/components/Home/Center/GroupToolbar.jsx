@@ -3,16 +3,39 @@ import './GroupToolbar.css'
 import {message, Modal} from "antd";
 import {deleteGroupApi, modifyGroupApi} from "../../../api/group";
 import {getTodayTasksApi} from "../../../api/task";
+import {IMPORTANT_GROUP_ID, TODAY_GROUP_ID} from "../index";
 
 export function GroupToolbar(props) {
     const {
+        groups,
         setGroups,
-        nowGroup,
-        setNowGroup,
+        selectedGroupId,
+        setSelectedGroupId,
         setTasks,
-        setShowLeftColumn,
-        setShowMask,
+        setView,
     } = props
+    let nowGroup
+    nowGroup = groups.find(group => group.id === selectedGroupId)
+    if (!nowGroup) {
+        switch (selectedGroupId) {
+            case TODAY_GROUP_ID : {
+                nowGroup = {
+                    id: TODAY_GROUP_ID,
+                    name: '我的一天'
+                }
+                break
+            }
+            case IMPORTANT_GROUP_ID: {
+                nowGroup = {
+                    id: IMPORTANT_GROUP_ID,
+                    name: '重要'
+                }
+                break
+            }
+            default: {
+            }
+        }
+    }
 
     const toolbarDetail = useRef()
     const toolbarButtonRef = useRef()
@@ -32,9 +55,7 @@ export function GroupToolbar(props) {
 
     async function modifyGroupName() {
         const newGroupName = groupNameRef.current.textContent
-        console.log(newGroupName)
-        setNowGroup({id: nowGroup.id, name: newGroupName})
-        await modifyGroupApi({id: nowGroup.id, name: newGroupName})
+        await modifyGroupApi({id: selectedGroupId, name: nowGroup.name})
         setGroups(groups => {
             groups.find(group => group.id === nowGroup.id).name = newGroupName
             return [...groups]
@@ -71,10 +92,10 @@ export function GroupToolbar(props) {
 
             async onOk() {
                 await deleteGroupApi(nowGroup.id)
-                setGroups(groups => groups.filter(group => group.id !== nowGroup.id))
                 message.success('删除成功')
+                setGroups(groups => groups.filter(group => group.id !== nowGroup.id))
+                setSelectedGroupId(TODAY_GROUP_ID)
                 const {data} = await getTodayTasksApi()
-                setNowGroup({id: -1, name: '我的一天'})
                 setTasks(data)
             },
 
@@ -82,19 +103,22 @@ export function GroupToolbar(props) {
     }
 
     function showLeftColumn() {
-        setShowLeftColumn(true)
-        setShowMask(true)
+        setView(view => ({
+            ...view,
+            showLeftColumn: true,
+            showMask: true,
+        }))
     }
 
     return <div className="groupToolbar">
         <div className="menu" onClick={showLeftColumn}><i className="fa fa-bars" aria-hidden="true"/></div>
         <div className="groupName" ref={groupNameRef}
-             contentEditable={nowGroup.id > 0 ? "true" : "false"}
+             contentEditable={selectedGroupId > TODAY_GROUP_ID ? "true" : "false"}
              onBlur={handleBlur} onKeyDown={handleKeyDown}
              suppressContentEditableWarning
         >{nowGroup.name}
         </div>
-        <div className="toolbarButton" style={{display: nowGroup.id > 0 ? 'block' : 'none'}}
+        <div className="toolbarButton" style={{display: selectedGroupId > 0 ? 'block' : 'none'}}
         >
             <i className="fa fa-ellipsis-h" ref={toolbarButtonRef} onClick={function (e) {
                 toolbarDetail.current.style.height = '80px'

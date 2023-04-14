@@ -21,7 +21,7 @@
 
 dom元素删除后所绑定的事件也随即消失
 
-## react渲染组件流程（生命周期）
+## 组件渲染流程
 
 类式组件：[渲染流程图](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
 
@@ -37,7 +37,10 @@ dom元素删除后所绑定的事件也随即消失
 
   当state更新：
 
-1. 执行`useEffect`中的函数（设置第二个参数，相当于调用`componentDidUpdate()`）
+1. 执行函数内部代码
+2. 执行执行`return`后的代码
+
+
 
 
 
@@ -223,23 +226,6 @@ this.setState((state, props) => ({
   
   - 箭头函数（箭头函数中this不指向function自身而是function父元素），但使用箭头函数可能会带来性能问题，此语法问题在于每次渲染 `LoggingButton` （下面代码）时都会创建不同的回调函数。在大多数情况下，这没什么问题，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的**重新渲染**。我们通常建议在构造器中绑定或使用 class fields 语法来避免这类性能问题。
   
-    ```jsx
-    class LoggingButton extends React.Component {
-      handleClick() {
-        console.log('this is:', this);
-      }
-    
-      render() {
-        // 此语法确保 `handleClick` 内的 `this` 已被绑定。 
-          return (
-              <button onClick={() => this.handleClick()}>
-                  Click me
-              </button>
-        );
-      }
-    }
-    ```
-  
 
 ### [ref](https://react.docschina.org/docs/refs-and-the-dom.html#refs-and-function-components)
 
@@ -345,6 +331,10 @@ const MyComponents = {
 function BlueDatePicker() {
   return <MyComponents.DatePicker color="blue" />;}
 ```
+
+## [\<StrictMode>](https://react.dev/reference/react/StrictMode#fixing-bugs-found-by-double-rendering-in-development)
+
+会执行函数体两次，调用useState中的函数两次，先调用userEffect挂载函数一次接着调用卸载函数一次最后再调用一次挂载函数
 
 
 
